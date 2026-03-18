@@ -1,4 +1,4 @@
-# RockyBot: News Research Tool 📈
+# ChatBot: News Research Tool 📈
 
 RockyBot is an AI-powered news research tool built using Streamlit, LangChain, and local Llama 3 models via Ollama. It allows users to input multiple news article URLs, scrapes the content, stores it in a local FAISS vector database, and lets users ask questions directly against the articles' content with accurate source citations.
 
