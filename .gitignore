@@ -1,17 +1,2 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Project specific
-faiss_store_ollama/
-*.pkl
+# Created by venv; see https://docs.python.org/3/library/venv.html
+*

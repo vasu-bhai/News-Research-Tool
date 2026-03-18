@@ -7,14 +7,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # NEW IMPORTS (OLLAMA)
-from langchain_ollama import ChatOllama, OllamaEmbeddings
-from langchain_community.document_loaders import UnstructuredURLLoader
+from langchain_groq import ChatGroq
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_classic.chains import RetrievalQAWithSourcesChain
 
 # UI
-st.title("RockyBot: News Research Tool 📈")
+st.title("ChatBot: News Research Tool 📈")
 st.sidebar.title("News Article URLs")
 
 # Input URLs
@@ -25,21 +26,21 @@ for i in range(3):
         urls.append(url)
 
 process_url_clicked = st.sidebar.button("Process URLs")
-file_path = "faiss_store_ollama"
+file_path = "faiss_store_groq"
 
 main_placeholder = st.empty()
 
-# 🔥 LOCAL LLM (NO API KEY NEEDED)
-llm = ChatOllama(
-    model="llama3.2:1b",   # Much smaller model (requires ~1.3GB memory vs 4.6GB)
+# 🔥 CLOUD LLM (FAST & LIGHTWEIGHT FOR DEPLOYMENT)
+llm = ChatGroq(
+    model="llama3-8b-8192", 
     temperature=0.2
 )
 
 # Process URLs
 if process_url_clicked and urls:
-    loader = UnstructuredURLLoader(
-        urls=urls,
-        headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"}
+    loader = WebBaseLoader(
+        web_paths=urls,
+        header_template={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"}
     )
 
     main_placeholder.text("Data Loading...Started...✅")
@@ -53,9 +54,10 @@ if process_url_clicked and urls:
 
     main_placeholder.text("Text Splitting...Started...✅")
     docs = text_splitter.split_documents(data)
+    main_placeholder.text("Text Splitting...Done...✅")
 
-    # 🔥 LOCAL EMBEDDINGS
-    embeddings = OllamaEmbeddings(model="llama3.2:1b")
+    # 🔥 LOCAL FAST EMBEDDINGS (HuggingFace CPU)
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
     vectorstore = FAISS.from_documents(docs, embeddings)
 
@@ -74,7 +76,7 @@ if query:
     if os.path.exists(file_path):
         vectorstore = FAISS.load_local(
             file_path, 
-            OllamaEmbeddings(model="llama3.2:1b"),
+            HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2"),
             allow_dangerous_deserialization=True
         )
 

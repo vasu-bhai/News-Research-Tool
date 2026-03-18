@@ -4,5 +4,8 @@ langchain-ollama
 langchain-community
 langchain
 faiss-cpu
-unstructured
+beautifulsoup4
 langchain-classic
+langchain-groq
+langchain-huggingface
+sentence-transformers
