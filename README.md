@@ -2,7 +2,7 @@
 
 An AI-powered news research assistant that answers questions over any set of news article URLs — **100% offline, no API keys required**. Paste up to 3 URLs, ask anything, and receive accurate answers with source citations backed by a local LLM.
 
-> **Live demo:** _[Deploy to Streamlit Cloud and add your link here]_
+> **Live demo:** https://news-research-tool-bfx94amauo8sqcu6uxbdd7.streamlit.app/
 
 ---
 
